@@ -322,7 +322,12 @@ func convertFlagsToResourceFlags(flags map[string]string) []v1alpha1.FlagSpec {
 		if name == KubeConfigFlag.Name || name == WaitingTimeFlag.Name {
 			continue
 		}
-		valueArr := strings.Split(values, ",")
+		var valueArr []string
+		if "where_rule" == name {
+			valueArr = []string{values}
+		} else {
+			valueArr = strings.Split(values, ",")
+		}
 		flagSpecs = append(flagSpecs, v1alpha1.FlagSpec{
 			Name:  name,
 			Value: valueArr,
