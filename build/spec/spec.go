@@ -18,6 +18,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/chaosblade-io/chaosblade/exec/golang"
 	"log"
 	"os"
 	"path"
@@ -50,8 +51,9 @@ func main() {
 	cplusModels := getCplusModels(cplusSpecFile)
 	criModels := getCriModels(criSpecFile, jvmSpecFile)
 	k8sModels := getKubernetesModels(k8sSpecFile, jvmSpecFile)
+	golangModels := golang.GetExpModel()
 
-	models := mergeModels(osModels, jvmModels, cplusModels, criModels, k8sModels)
+	models := mergeModels(osModels, jvmModels, cplusModels, criModels, k8sModels, golangModels)
 
 	file, err := os.OpenFile(chaosSpecFile, os.O_CREATE|os.O_TRUNC|os.O_RDWR, 0755)
 	if err != nil {

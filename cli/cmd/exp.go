@@ -22,6 +22,7 @@ import (
 	"github.com/chaosblade-io/chaosblade-exec-cri/exec"
 	"github.com/chaosblade-io/chaosblade-operator/exec/model"
 	"github.com/chaosblade-io/chaosblade-spec-go/log"
+	"github.com/chaosblade-io/chaosblade/exec/golang"
 	"path"
 
 	"github.com/chaosblade-io/chaosblade-spec-go/channel"
@@ -127,6 +128,8 @@ func (ec *baseExpCommandService) registerSubCommands() {
 	ec.registerCriExpCommands()
 	// register k8s command
 	ec.registerK8sExpCommands()
+	// register golang command
+	ec.registerGolangExpCommands()
 }
 
 // registerOsExpCommands
@@ -256,6 +259,17 @@ func (ec *baseExpCommandService) registerK8sExpCommands() []*modelCommand {
 		copyAndAddCommand(cobraCmd, child.command)
 	}
 	return modelCommands
+}
+
+func (ec *baseExpCommandService) registerGolangExpCommands() []*modelCommand {
+	models := golang.GetExpModel()
+	golangCommands := make([]*modelCommand, 0)
+	for idx := range models.Models {
+		model := &models.Models[idx]
+		command := ec.registerExpCommand(model, "")
+		golangCommands = append(golangCommands, command)
+	}
+	return golangCommands
 }
 
 // registerCriExpCommands
